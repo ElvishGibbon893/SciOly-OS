@@ -1,4 +1,4 @@
-const dbRequest = indexedDB.open("SciOlyDB", 2);
+const dbRequest = indexedDB.open("SciOlyDB_Fresh", 1);
 dbRequest.onupgradeneeded = function(event) {
     const db = event.target.result;
 
@@ -89,7 +89,7 @@ addStudentButton.addEventListener("click", function(){
     }
 
     if (!studentGrade.value) {
-        alert("Please enter a student name.");
+        alert("Please select a grade.");
         return;
     }
 
@@ -157,8 +157,8 @@ function showStudents() {
         return student.status === "alternate";
     });
 
-    const seniors = mainStudents.filter(function(students) {
-        return students.grade === 12;
+    const seniors = mainStudents.filter(function(student) {
+        return student.grade === 12;
     });
 
     mainRosterTitle.textContent = 
@@ -377,13 +377,20 @@ function showAssignedStudents() {
     request.onsuccess = function() {
         const assignments = request.result;
 
-        console.log("Loaded assignments:", assignments);
-
         assignedStudentList.innerHTML = "";
 
         assignments.forEach(function(assignment) {
             const item = document.createElement("li");
-            item.textContent = assignment.studentName;
+            item.textContent = assignment.studentName + " ";
+
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+
+            removeButton.addEventListener("click", function() {
+                removeAssignment(assignment.id);
+            });
+
+            item.appendChild(removeButton);
             assignedStudentList.appendChild(item);
         });
 
@@ -393,6 +400,23 @@ function showAssignedStudents() {
         eventCapacity.textContent = 
             assignments.length + "/" + limit + 
             " assigned - " + remaining + " slots left";
+    };
+}
+
+function removeAssignment(assignmentId) {
+    const db = dbRequest.result;
+
+    const transaction = db.transaction("assignments", "readwrite");
+    const assignmentStore = transaction.objectStore("assignments");
+
+    assignmentStore.delete(assignmentId);
+
+    transaction.oncomplete = function() {
+        showAssignedStudents();
+    };
+
+    transaction.onerror = function() {
+        alert("Could not remove assignment.");
     };
 }
 
