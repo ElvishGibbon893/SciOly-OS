@@ -195,12 +195,32 @@ function showStudents() {
 }
 
 function deleteStudent(studentId) {
-    const transaction = dbRequest.result.transaction("students", "readwrite");
+    const db = dbRequest.result;
+
+    const transaction = db.transaction(
+        ["students", "assignments"],
+        "readwrite"
+    );
+
     const studentStore = transaction.objectStore("students");
+    const assignmentStore = transaction.objectStore("assignments");
 
-    const deleteRequest = studentStore.delete(studentId);
+    studentStore.delete(studentId);
 
-    deleteRequest.onsuccess = function() {
+    const cursorRequest = assignmentStore.openCursor();
+    cursorRequest.onsuccess = function(event) {
+        const cursor = event.target.result;
+
+        if (cursor) {
+            if (cursor.value.studentId === studentId) {
+                cursor.delete();
+            }
+
+            cursor.continue();
+        }
+    };
+
+    transaction.oncomplete = function() {
         for (const team in teams) {
             teams[team] = teams[team].filter(function(student) {
                 return student.id !== studentId;
@@ -209,6 +229,11 @@ function deleteStudent(studentId) {
 
         showStudents();
         showAssignmentStudents();
+        showAssignedStudents();
+    };
+
+    transaction.onerror = function() {
+        alert("Could not delete student.");
     };
 }
 
