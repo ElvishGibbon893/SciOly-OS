@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SciOly OS</title>
+</head>
+<body>
+    <h1>SciOly OS</h1>
+    <p>Science Olympiad Team Management</p>
+
+    <h2>Teams</h2>
+    <select id="teamSelect">
+        <option>Varsity</option>
+        <option>Junior Varsity 1</option>
+        <option>Junior Varsity 2</option>
+    </select>
+    <h3 id="teamName">Varsity</h3>
+    <p id="teamInfo">Currently viewing Varsity</p>
+    <h3>Team Roster</h3>
+
+    <input type="text" id="studentName" placeholder="Student name">
+
+    <label for="studentGrade">Grade:</label>
+    <select id="studentGrade">
+        <option value="" disabled selected>Select Grade</option>
+        <option value="9">9th Grade</option>
+        <option value="10">10th Grade</option>
+        <option value="11">11th Grade</option>
+        <option value="12">12th Grade</option>
+    </select>
+
+    <label for="studentStatus">Roster Status</label>
+    <select id="studentStatus">
+        <option value="main">Main Roster</option>
+        <option value="alternate">Alternate</option>
+    </select>
+
+    <button id="addStudent">Add Student</button>
+
+    <h3 id="mainRosterTitle">Main Roster (0/15)</h3>
+    <p id="seniorCount">Seniors: 0/7</p>
+    <ul id="studentList"></ul>
+
+    <h3 id="alternateRosterTitle">Alternates (0)</h3>
+    <ul id="alternateList"></ul>
+
+    <h2>Event Assignments</h2>
+
+    <label for="divisionSelect">Division</label>
+    <select id="divisionSelect">
+        <option value="C">Division C</option>
+        <option value="B">Division B</option>
+    </select>
+
+    <label for="eventSelect">Event:</label>
+    <select id="eventSelect"></select>
+
+    <p id="eventCapacity">Select an event to view its capacity.</p>
+
+    <h3>Assign Students</h3>
+
+    <label for="assignmentStudent">Student:</label>
+    <select id="assignmentStudent"></select>
+
+    <button id="assignStudentButton">Assign Student</button>
+
+    <h3>Assigned Students</h3>
+    <ul id="assignedStudentList"></ul>
+
+    <script src="app.js"></script>
+</body>
+</html>
