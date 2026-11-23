@@ -95,7 +95,7 @@ addStudentButton.addEventListener("click", function(){
 
     const currentStudents = teams[selectedTeam];
 
-    const mainStudent = currentStudents.filter(function(student) {
+    const mainStudents = currentStudents.filter(function(student) {
         return student.status !== "alternate";
     });
 
@@ -132,7 +132,7 @@ addStudentButton.addEventListener("click", function(){
             status: status
         };
 
-        team[selectedTeam].push(student);
+        teams[selectedTeam].push(student);
 
         showStudents();
         showAssignmentStudents();
@@ -149,7 +149,7 @@ function showStudents() {
     const selectedTeam = teamSelect.value;
     const students = teams[selectedTeam];
 
-    const mainStudents = students.filter(function(students) {
+    const mainStudents = students.filter(function(student) {
         return student.status !== "alternate";
     });
 
@@ -168,7 +168,7 @@ function showStudents() {
         "Seniors: " + seniors.length + "/7";
 
     alternateRosterTitle.textContent = 
-        "Alternates (" + alternates.length = ")";
+        "Alternates (" + alternates.length + ")";
 
     function addStudentToList(student, list) {
         const item = document.createElement("li");
